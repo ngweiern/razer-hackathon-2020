@@ -4,78 +4,94 @@
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>X</title>
-    <link rel="stylesheet"
-          href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css"/>
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js">
-    </script>
-    <style type="text/css">
-        .foot {
-            font-size: 75%;
-            font-style: italic;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <script
+            src="https://code.jquery.com/jquery-3.5.1.min.js"
+            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+            crossorigin="anonymous"></script>
 </head>
 <body>
 
-<div id="page1" data-role="page" data-theme="b">
-    <div class="head" data-role="header">
-        <h1>Page One</h1>
-        <a href="#page2" class="ui-btn-right">next</a>
-    </div>
-    <div class="content" data-role="content">
-        <p>
-            This is the index
-        </p>
-        <ul>
-            <li><a data-role="button" href="#page1">page 1</a></li>
-            <li><a data-role="button" href="#page2">page 2</a></li>
-            <li><a data-role="button" href="#page3">page 3</a></li>
-        </ul>
-    </div>
-    <div class="foot" data-role="footer" data-position="fixed">
-        from HTML All in One for Dummies
-    </div>
-</div>
+<div id="svg_wrap"></div>
 
-<div id="page2" data-role="page" data-theme="b">
-    <div class="head" data-role="header">
-        <a href="#page1">prev</a>
-        <h1>Page Two</h1>
-        <a href="#page3">next</a>
-    </div>
-    <div class="content" data-role="content">
-        <p>
-            The second page is much like the first, except
-            it isn't the first, and it has text rather than
-            buttons. It's the second page.
-            If you like the first, I suppose you can
-            go back, but you should really go to the next
-            page, because I hear it's really nice.
-        </p>
-    </div>
-    <div class="foot" data-role="footer" data-position="fixed">
-        from HTML All in One for Dummies
-    </div>
-</div>
+<main>
 
-<div id="page3" data-role="page" data-theme="b">
-    <div class="head" data-role="header">
-        <a href="#page2">prev</a>
-        <h1>Page Three</h1>
-    </div>
-    <div class="content" data-role="content">
-        <p>
-            <a href="#page1" data-role="button" data-transition="flip">
-                Go to index
-            </a>
-        </p>
-    </div>
-    <div class="foot" data-role="footer" data-position="fixed">
-        from HTML All in One for Dummies
-    </div>
-</div>
+    <section>
+        <p>Personal information</p>
+        <label>
+            <input type="text" placeholder="Firstname"/>
+        </label>
+        <label>
+            <input type="text" placeholder="Surname"/>
+        </label>
+        <label>
+            <input type="text" placeholder="Birthdate"/>
+        </label>
+        <label>
+            <input type="text" placeholder="Insurance number"/>
+        </label>
+        <label>
+            <input type="text" placeholder="Family status"/>
+        </label>
+    </section>
 
+    <section>
+        <p>Address</p>
+        <label>
+            <input type="text" placeholder="Street, nbr"/>
+        </label>
+        <label>
+            <input type="text" placeholder="City"/>
+        </label>
+        <label>
+            <input type="text" placeholder="Postcode"/>
+        </label>
+        <label>
+            <input type="text" placeholder="Country"/>
+        </label>
+    </section>
+
+    <section>
+        <p>Contact information</p>
+        <label>
+            <input type="text" placeholder="Email address"/>
+        </label>
+        <label>
+            <input type="text" placeholder="Phone"/>
+        </label>
+        <label>
+            <input type="text" placeholder="Mobile"/>
+        </label>
+    </section>
+
+    <section>
+        <p>Application</p>
+        <label>
+            <input type="text" placeholder="Preferred entrance date"/>
+        </label>
+        <label>
+            <input type="text" placeholder="Number of people"/>
+        </label>
+    </section>
+
+    <section>
+        <p>General condtitions</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+            commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+            est
+            laborum.</p>
+    </section>
+</main>
+
+<footer>
+    <div class="button" id="back">&larr; Back</div>
+    <div class="button" id="next">Next &rarr;</div>
+    <div class="button" id="submit">Agree and send application</div>
+</footer>
+
+<script src="javascripts/script.js"></script>
 </body>
 </html>

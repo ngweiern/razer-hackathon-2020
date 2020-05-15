@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+body {
+    /*background: url('https://www.freevector.com/uploads/vector/preview/30355/Fluid_Gradient_Background.jpg');*/
+    background: lightblue;
+    background-size: 100%;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    position: relative;
+}
+
+footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    /* position footer statically */
+    /*position: absolute;*/
+    /*top: 525px;*/
+}
+
+#svg_form_time {
+    height: 15px;
+    max-width: 80%;
+    margin: 40px auto 20px;
+    display: block;
+}
+
+#svg_form_time circle,
+#svg_form_time rect {
+    fill: white;
+}
+
+.button {
+    background: rgb(237, 40, 70);
+    border-radius: 100px;
+    padding: 15px 25px;
+    display: inline-block;
+    margin: 10px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+
+.disabled {
+    display: none;
+}
+
+section {
+    padding: 50px 100px 70px;
+    max-width: 400px;
+    margin: 30px auto;
+    background: white;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    transition: transform 0.2s ease-in-out;
+}
+
+input {
+    width: 100%;
+    margin: 5px 0px;
+    display: inline-block;
+    padding: 15px 25px;
+    box-sizing: border-box;
+    border-radius: 50px;
+    border: 1px solid lightgrey;
+    font-size: 1em;
+    font-family: inherit;
+    background: white;
+}
+
+p {
+    margin: 5px;
+    text-align: left;
+    font-weight: bold;
+    font-size: 0.9em;
+}
