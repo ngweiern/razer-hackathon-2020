@@ -7,7 +7,7 @@ $("#back").addClass("disabled");
 $("#submit").addClass("disabled");
 
 $("section").not("section:nth-of-type(1)").hide();
-$("section").not("section:nth-of-type(1)").css('transform','translateX(100px)');
+$("section").not("section:nth-of-type(1)").css('transform', 'translateX(100px)');
 
 var svgWidth = length * 200 + 24;
 $("#svg_wrap").html(
@@ -24,7 +24,7 @@ function makeSVG(tag, attrs) {
 
 for (i = 0; i < length; i++) {
     var positionX = 12 + i * 200;
-    var rect = makeSVG("rect", { x: positionX, y: 9, width: 200, height: 6 });
+    var rect = makeSVG("rect", {x: positionX, y: 9, width: 200, height: 6});
     document.getElementById("svg_form_time").appendChild(rect);
     // <g><rect x="12" y="9" width="200" height="6"></rect></g>'
     var circle = makeSVG("circle", {
@@ -82,8 +82,50 @@ $(".button").click(function () {
     );
     var currentSection = $("section:nth-of-type(" + child + ")");
     currentSection.fadeIn();
-    currentSection.css('transform','translateX(0)');
-    currentSection.prevAll('section').css('transform','translateX(-100px)');
-    currentSection.nextAll('section').css('transform','translateX(100px)');
+    currentSection.css('transform', 'translateX(0)');
+    currentSection.prevAll('section').css('transform', 'translateX(-100px)');
+    currentSection.nextAll('section').css('transform', 'translateX(100px)');
     $('section').not(currentSection).hide();
 });
+
+
+$.ajax({
+    url: 'data/currency_code.csv',
+    dataType: 'text',
+}).done(successFunction);
+
+function successFunction(data) {
+    var allRows = data.split(/\r?\n|\r/);
+    // var table = '<table>';
+    for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
+        if (singleRow === 0) {
+            continue;
+        }
+        // else {
+        //     table += '<tr>';
+        // }
+        var rowCells = allRows[singleRow].split('|');
+        // for (var rowCell = 0; rowCell < rowCells.length; rowCell++) {
+        //     if (singleRow === 0) {
+        //         table += '<th>';
+        //         table += rowCells[rowCell];
+        //         table += '</th>';
+        //     } else {
+        //         table += '<td>';
+        //         table += rowCells[rowCell];
+        //         table += '</td>';
+        //     }
+        // }
+        // if (singleRow === 0) {
+        //     table += '</tr>';
+        //     table += '</thead>';
+        //     table += '<tbody>';
+        // } else {
+        //     table += '</tr>';
+        // }
+        $('#from-currency').append(`<option value="${rowCells[3]}">${rowCells[1]} (${rowCells[2]})</option>`);
+        $('#to-currency').append(`<option value="${rowCells[3]}">${rowCells[1]} (${rowCells[2]})</option>`);
+    }
+    // table += '</tbody>';
+    // table += '</table>';
+}

@@ -77,9 +77,91 @@ input {
     background: white;
 }
 
-p {
-    margin: 5px;
+header {
+    margin: 0px 5px 20px;
     text-align: left;
     font-weight: bold;
     font-size: 0.9em;
+}
+
+/**/
+/* Floating column for labels: 25% width */
+.col-25 {
+    float: left;
+    width: 25%;
+    margin-top: 6px;
+    line-height: 20px;
+    text-align: left;
+    margin-left: 5px;
+}
+
+/* Floating column for inputs: 75% width */
+.col-75 {
+    float: left;
+    width: 75%;
+    margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.row:nth-child(n+2) {
+    margin-top: 15px;
+}
+/**/
+
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: vertical;
+    background: white;
+    margin: 5px 0;
+}
+
+.col-25, .col-75 {
+    width: 100%;
+    margin-top: 0;
+}
+
+@media only screen and (max-width: 425px) {
+    input, select {
+        font-size: 13px;
+    }
+
+    .button {
+        font-size: 15px;
+    }
+
+    main {
+        margin: 30px;
+    }
+
+    section {
+        padding: 50px 25px 70px;
+    }
+
+    header {
+        font-size: 1.1em;
+    }
+}
+
+@media only screen and (min-width: 1024px) {
+    input, select {
+        font-size: 20px;
+    }
+
+    .button {
+        font-size: 15px;
+    }
+
+    header {
+        font-size: 1.3em;
+    }
 }
