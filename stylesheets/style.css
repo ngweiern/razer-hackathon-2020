@@ -64,7 +64,7 @@ section {
     transition: transform 0.2s ease-in-out;
 }
 
-input {
+input, .field {
     width: 100%;
     margin: 5px 0px;
     display: inline-block;
@@ -72,9 +72,22 @@ input {
     box-sizing: border-box;
     border-radius: 50px;
     border: 1px solid lightgrey;
-    font-size: 1em;
+    /*font-size: 1em;*/
     font-family: inherit;
     background: white;
+    text-transform: uppercase;
+}
+
+select {
+/*    width: 100%;*/
+/*    padding: 12px;*/
+/*    border: 1px solid #ccc;*/
+/*    border-radius: 4px;*/
+/*    box-sizing: border-box;*/
+/*    resize: vertical;*/
+/*    background: white;*/
+/*    margin: 5px 0;*/
+
 }
 
 header {
@@ -84,10 +97,21 @@ header {
     font-size: 0.9em;
 }
 
+#converted-amount {
+    margin: 0 0 0 5px;
+    padding: 0 0 5px 0;
+    text-align: left;
+    border-bottom: 1px solid black;
+}
+
+.ui-datepicker-calendar {
+    display: none;
+}
+
 /**/
 /* Floating column for labels: 25% width */
 .col-25 {
-    float: left;
+    /*float: left;*/
     width: 25%;
     margin-top: 6px;
     line-height: 20px;
@@ -96,11 +120,11 @@ header {
 }
 
 /* Floating column for inputs: 75% width */
-.col-75 {
-    float: left;
-    width: 75%;
-    margin-top: 6px;
-}
+/*.col-75 {*/
+/*    float: left;*/
+/*    width: 75%;*/
+/*    margin-top: 6px;*/
+/*}*/
 
 /* Clear floats after the columns */
 .row:after {
@@ -114,17 +138,6 @@ header {
 }
 /**/
 
-select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    resize: vertical;
-    background: white;
-    margin: 5px 0;
-}
-
 .col-25, .col-75 {
     width: 100%;
     margin-top: 0;
@@ -132,7 +145,7 @@ select {
 
 @media only screen and (max-width: 425px) {
     input, select {
-        font-size: 13px;
+        font-size: 0.8em;
     }
 
     .button {
@@ -152,9 +165,9 @@ select {
     }
 }
 
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 768px) {
     input, select {
-        font-size: 20px;
+        font-size: 1em;
     }
 
     .button {

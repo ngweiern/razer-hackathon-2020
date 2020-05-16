@@ -48,19 +48,75 @@ document.getElementById("svg_form_time").appendChild(circle);
 
 $("circle:nth-of-type(1)").css("fill", active_color);
 
+function getFx() {
+    let amountToConvert = $("#amount-to-convert").val().toString()
+    let startDate = $("#start-date").val()
+    let fromCurrency = $('#from-currency').find(":selected").val()
+    let toCurrency = $('#to-currency').find(":selected").val()
+
+    $.ajax({
+        headers: { "Accept": "application/json"},
+        url: "http://localhost:5000/getCurrentFx",
+        crossDomain: true,
+        data: {
+            "dest_currency": toCurrency,
+            "source_currency": fromCurrency,
+            "amount": amountToConvert,
+            "markup_rate": 0.05
+        },
+        cache: false,
+        type: "GET",
+        success: function (response) {
+            console.log(response)
+            $("#svg_form_time rect").css("fill", active_color);
+            $("#svg_form_time circle").css("fill", active_color);
+            $("#converted-amount").text(response.destinationAmount).css({"display": "block"})
+            $("#back").removeClass("disabled");
+            if (child >= length) {
+                $('#next').addClass("disabled");
+                $('#submit').removeClass("disabled");
+            }
+            if (child <= length) {
+                child++;
+            }
+            var circle_child = child + 1;
+            $("#svg_form_time rect:nth-of-type(n + " + child + ")").css(
+                "fill",
+                base_color
+            );
+            $("#svg_form_time circle:nth-of-type(n + " + circle_child + ")").css(
+                "fill",
+                base_color
+            );
+            var currentSection = $("section:nth-of-type(" + child + ")");
+            currentSection.fadeIn();
+            currentSection.css('transform', 'translateX(0)');
+            currentSection.prevAll('section').css('transform', 'translateX(-100px)');
+            currentSection.nextAll('section').css('transform', 'translateX(100px)');
+            $('section').not(currentSection).hide();
+        },
+        error: function (xhr) {
+
+        }
+    })
+}
+
 $(".button").click(function () {
-    $("#svg_form_time rect").css("fill", active_color);
-    $("#svg_form_time circle").css("fill", active_color);
+    // $("#svg_form_time rect").css("fill", active_color);
+    // $("#svg_form_time circle").css("fill", active_color);
     var id = $(this).attr("id");
     if (id == "next") {
-        $("#back").removeClass("disabled");
-        if (child >= length) {
-            $(this).addClass("disabled");
-            $('#submit').removeClass("disabled");
-        }
-        if (child <= length) {
-            child++;
-        }
+        // $("#back").removeClass("disabled");
+        // if (child >= length) {
+        //     $(this).addClass("disabled");
+        //     $('#submit').removeClass("disabled");
+        // }
+        // if (child <= length) {
+        //     child++;
+        // }
+        //
+        getFx();
+
     } else if (id == "back") {
         $("#next").removeClass("disabled");
         $('#submit').addClass("disabled");
@@ -70,22 +126,38 @@ $(".button").click(function () {
         if (child > 1) {
             child--;
         }
+        //
+        var circle_child = child + 1;
+        $("#svg_form_time rect:nth-of-type(n + " + child + ")").css(
+            "fill",
+            base_color
+        );
+        $("#svg_form_time circle:nth-of-type(n + " + circle_child + ")").css(
+            "fill",
+            base_color
+        );
+        var currentSection = $("section:nth-of-type(" + child + ")");
+        currentSection.fadeIn();
+        currentSection.css('transform', 'translateX(0)');
+        currentSection.prevAll('section').css('transform', 'translateX(-100px)');
+        currentSection.nextAll('section').css('transform', 'translateX(100px)');
+        $('section').not(currentSection).hide();
     }
-    var circle_child = child + 1;
-    $("#svg_form_time rect:nth-of-type(n + " + child + ")").css(
-        "fill",
-        base_color
-    );
-    $("#svg_form_time circle:nth-of-type(n + " + circle_child + ")").css(
-        "fill",
-        base_color
-    );
-    var currentSection = $("section:nth-of-type(" + child + ")");
-    currentSection.fadeIn();
-    currentSection.css('transform', 'translateX(0)');
-    currentSection.prevAll('section').css('transform', 'translateX(-100px)');
-    currentSection.nextAll('section').css('transform', 'translateX(100px)');
-    $('section').not(currentSection).hide();
+    // var circle_child = child + 1;
+    // $("#svg_form_time rect:nth-of-type(n + " + child + ")").css(
+    //     "fill",
+    //     base_color
+    // );
+    // $("#svg_form_time circle:nth-of-type(n + " + circle_child + ")").css(
+    //     "fill",
+    //     base_color
+    // );
+    // var currentSection = $("section:nth-of-type(" + child + ")");
+    // currentSection.fadeIn();
+    // currentSection.css('transform', 'translateX(0)');
+    // currentSection.prevAll('section').css('transform', 'translateX(-100px)');
+    // currentSection.nextAll('section').css('transform', 'translateX(100px)');
+    // $('section').not(currentSection).hide();
 });
 
 
@@ -101,31 +173,24 @@ function successFunction(data) {
         if (singleRow === 0) {
             continue;
         }
-        // else {
-        //     table += '<tr>';
-        // }
+
         var rowCells = allRows[singleRow].split('|');
-        // for (var rowCell = 0; rowCell < rowCells.length; rowCell++) {
-        //     if (singleRow === 0) {
-        //         table += '<th>';
-        //         table += rowCells[rowCell];
-        //         table += '</th>';
-        //     } else {
-        //         table += '<td>';
-        //         table += rowCells[rowCell];
-        //         table += '</td>';
-        //     }
-        // }
-        // if (singleRow === 0) {
-        //     table += '</tr>';
-        //     table += '</thead>';
-        //     table += '<tbody>';
-        // } else {
-        //     table += '</tr>';
-        // }
+
         $('#from-currency').append(`<option value="${rowCells[3]}">${rowCells[1]} (${rowCells[2]})</option>`);
         $('#to-currency').append(`<option value="${rowCells[3]}">${rowCells[1]} (${rowCells[2]})</option>`);
     }
-    // table += '</tbody>';
-    // table += '</table>';
+}
+
+window.onload = function () {
+    $('.date-picker').datepicker({
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        dateFormat: 'MM yy',
+        onClose: function (dateText, inst) {
+            $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+        }
+    });
+
+    $(".date-picker").datepicker().datepicker("setDate", new Date());
 }

@@ -5,7 +5,10 @@ from pprint import pprint
 from secrets import USERNAME, PASSWORD
 import requests
 import xmltodict
+from flask_cors import CORS, cross_origin
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 key_file = "./key_82d074e4-eb36-4de4-a9b4-b53e70974816.pem"
@@ -20,6 +23,7 @@ def handle_invalid_usage(error):
     return str(error)
 
 @app.route('/getCurrentSpending')
+@cross_origin()
 def get_current_spending():
     inquiry_body = {
         "primaryAccountNumbers": ["4344978515350000"]
@@ -47,6 +51,7 @@ def get_current_spending():
 
 
 @app.route('/getCurrentFx')
+@cross_origin()
 def get_current_fx():
     dest_currency = request.args.get('dest_currency')
     source_currency = request.args.get('source_currency')
