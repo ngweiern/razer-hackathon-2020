@@ -69,7 +69,6 @@ function handleExchangeRate(data) {
             minForecastedValue = Math.round(forecastedValue * 0.95)
             maxForecastedValue = Math.round(forecastedValue * 1.02)
             $("#savings").text(`$${Math.round(amountConverted-minForecastedValue)}`)
-            // $('#forecasted-label').text(`Forecasted range of SGD required`)
             $(".converted-amount-forecasted").text(`$${minForecastedValue} - $${maxForecastedValue}`)
             $("#final-page-forecast").text(`$${Math.round(forecastedValue * 0.98)} - $${Math.round(forecastedValue * 1.01)}`)
             $("#final-savings").text(`$${Math.round(amountConverted-forecastedValue * 0.98)}`)
@@ -100,34 +99,12 @@ function getFx() {
         cache: false,
         type: "GET",
         success: function (response) {
-            $("#svg_form_time rect").css("fill", active_color);
-            $("#svg_form_time circle").css("fill", active_color);
-            console.log(response)
+
             amountConverted = response.destinationAmount
             $("#converted-amount-current").text(`$${Math.round(amountConverted)}`).css({"display": "block"})
-            $("#back").removeClass("disabled");
-            if (child >= length) {
-                $('#next').addClass("disabled");
-                $('#submit').removeClass("disabled");
-            }
-            if (child <= length) {
-                child++;
-            }
-            var circle_child = child + 1;
-            $("#svg_form_time rect:nth-of-type(n + " + child + ")").css(
-                "fill",
-                base_color
-            );
-            $("#svg_form_time circle:nth-of-type(n + " + circle_child + ")").css(
-                "fill",
-                base_color
-            );
-            var currentSection = $("section:nth-of-type(" + child + ")");
-            currentSection.fadeIn();
-            currentSection.css('transform', 'translateX(0)');
-            currentSection.prevAll('section').css('transform', 'translateX(-100px)');
-            currentSection.nextAll('section').css('transform', 'translateX(100px)');
-            $('section').not(currentSection).hide();
+
+            handleNextPageTransit();
+            transitFromCurrentPage();
 
             $.ajax({
                 url: `data/forecast_sgd_${toCurrencyChar.toLowerCase()}.csv`,
@@ -141,93 +118,63 @@ function getFx() {
     })
 }
 
+function transitFromCurrentPage() {
+    $("#svg_form_time rect").css("fill", active_color);
+    $("#svg_form_time circle").css("fill", active_color);
+
+    var circle_child = child + 1;
+    $("#svg_form_time rect:nth-of-type(n + " + child + ")").css(
+        "fill",
+        base_color
+    );
+    $("#svg_form_time circle:nth-of-type(n + " + circle_child + ")").css(
+        "fill",
+        base_color
+    );
+    var currentSection = $("section:nth-of-type(" + child + ")");
+    currentSection.fadeIn();
+    currentSection.css('transform', 'translateX(0)');
+    currentSection.prevAll('section').css('transform', 'translateX(-100px)');
+    currentSection.nextAll('section').css('transform', 'translateX(100px)');
+    $('section').not(currentSection).hide();
+}
+
+function handleBackPageTransit() {
+    $("#next").removeClass("disabled");
+    $('#submit').addClass("disabled");
+    if (child <= 2) {
+        $(this).addClass("disabled");
+    }
+    if (child > 1) {
+        child--;
+    }
+}
+
+function handleNextPageTransit() {
+    $("#back").removeClass("disabled");
+    if (child >= length) {
+        $('#next').addClass("disabled");
+        $('#submit').removeClass("disabled");
+    }
+    if (child <= length) {
+        child++;
+    }
+}
+
 $(".button").click(function () {
-    // $("#svg_form_time rect").css("fill", active_color);
-    // $("#svg_form_time circle").css("fill", active_color);
     var id = $(this).attr("id");
     if (id == "next") {
-        // $("#back").removeClass("disabled");
-        // if (child >= length) {
-        //     $(this).addClass("disabled");
-        //     $('#submit').removeClass("disabled");
-        // }
-        // if (child <= length) {
-        //     child++;
-        // }
-        //
         if (child === 1) {
             getFx();
         } else {
-            $("#svg_form_time rect").css("fill", active_color);
-            $("#svg_form_time circle").css("fill", active_color);
-
-            $("#back").removeClass("disabled");
-            if (child >= length) {
-                $('#next').addClass("disabled");
-                $('#submit').removeClass("disabled");
-            }
-            if (child <= length) {
-                child++;
-            }
-            var circle_child = child + 1;
-            $("#svg_form_time rect:nth-of-type(n + " + child + ")").css(
-                "fill",
-                base_color
-            );
-            $("#svg_form_time circle:nth-of-type(n + " + circle_child + ")").css(
-                "fill",
-                base_color
-            );
-            var currentSection = $("section:nth-of-type(" + child + ")");
-            currentSection.fadeIn();
-            currentSection.css('transform', 'translateX(0)');
-            currentSection.prevAll('section').css('transform', 'translateX(-100px)');
-            currentSection.nextAll('section').css('transform', 'translateX(100px)');
-            $('section').not(currentSection).hide();
+            handleNextPageTransit();
+            transitFromCurrentPage()
         }
 
     } else if (id == "back") {
-        $("#next").removeClass("disabled");
-        $('#submit').addClass("disabled");
-        if (child <= 2) {
-            $(this).addClass("disabled");
-        }
-        if (child > 1) {
-            child--;
-        }
-        //
-        var circle_child = child + 1;
-        $("#svg_form_time rect:nth-of-type(n + " + child + ")").css(
-            "fill",
-            base_color
-        );
-        $("#svg_form_time circle:nth-of-type(n + " + circle_child + ")").css(
-            "fill",
-            base_color
-        );
-        var currentSection = $("section:nth-of-type(" + child + ")");
-        currentSection.fadeIn();
-        currentSection.css('transform', 'translateX(0)');
-        currentSection.prevAll('section').css('transform', 'translateX(-100px)');
-        currentSection.nextAll('section').css('transform', 'translateX(100px)');
-        $('section').not(currentSection).hide();
+        handleBackPageTransit();
+        transitFromCurrentPage();
     }
-
-    // var circle_child = child + 1;
-    // $("#svg_form_time rect:nth-of-type(n + " + child + ")").css(
-    //     "fill",
-    //     base_color
-    // );
-    // $("#svg_form_time circle:nth-of-type(n + " + circle_child + ")").css(
-    //     "fill",
-    //     base_color
-    // );
-    // var currentSection = $("section:nth-of-type(" + child + ")");
-    // currentSection.fadeIn();
-    // currentSection.css('transform', 'translateX(0)');
-    // currentSection.prevAll('section').css('transform', 'translateX(-100px)');
-    // currentSection.nextAll('section').css('transform', 'translateX(100px)');
-    // $('section').not(currentSection).hide();
 });
 
 $.ajax({
@@ -237,7 +184,7 @@ $.ajax({
 
 function handleCurrencyCodes(data) {
     var allRows = data.split(/\r?\n|\r/);
-    // var table = '<table>';
+
     for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
         if (singleRow === 0) {
             continue;
@@ -245,7 +192,6 @@ function handleCurrencyCodes(data) {
 
         var rowCells = allRows[singleRow].split('|');
 
-        // $('#from-currency').append(`<option value="${rowCells[3]},${rowCells[2]}">${rowCells[1]} (${rowCells[2]})</option>`);
         $('#to-currency').append(`<option value="${rowCells[3]},${rowCells[2]}">${rowCells[1]} (${rowCells[2]})</option>`);
     }
 }

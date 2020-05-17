@@ -21,37 +21,37 @@
     <section>
         <header>Currency conversion</header>
         <div class="row">
-            <div class="col-25">
+            <div class="row-heading">
                 <label for="from-currency">From</label>
             </div>
-            <div class="col-75">
+            <div class="row-content">
                 <select id="from-currency" class="field" name="from-currency" disabled>
                     <option value="702,SGD">SINGAPORE DOLLAR (SGD)</option>
                 </select>
             </div>
         </div>
         <div class="row">
-            <div class="col-25">
+            <div class="row-heading">
                 <label for="to-currency">To</label>
             </div>
-            <div class="col-75">
+            <div class="row-content">
                 <select id="to-currency" class="field" name="to-currency">
                 </select>
             </div>
         </div>
         <div class="row">
-            <div class="col-25">
+            <div class="row-heading">
                 <label for="amount-required">Amount Required</label>
             </div>
-            <div class="col-75">
+            <div class="row-content">
                 <input id="amount-required" class="field" type="number" placeholder="10000.00" value="10000.00"/>
             </div>
         </div>
         <div class="row">
-            <div class="col-25">
+            <div class="row-heading">
                 <label for="start-date">When the money is required:</label>
             </div>
-            <div class="col-75">
+            <div class="row-content">
                 <input name="startDate" id="start-date" class="field date-picker"/>
             </div>
         </div>
@@ -60,18 +60,18 @@
     <section>
         <header>Forecast</header>
         <div class="row">
-            <div class="col-25">
+            <div class="row-heading">
                 <p>SGD required (current exchange rate)</p>
             </div>
-            <div class="col-75">
+            <div class="row-content">
                 <p><span id="converted-amount-current" class="converted-amount"></span></p>
             </div>
         </div>
         <div class="row">
-            <div class="col-25">
+            <div class="row-heading">
                 <p class="forecasted-label">Forecasted range of SGD required</p>
             </div>
-            <div class="col-75">
+            <div class="row-content">
                 <p><span class="converted-amount converted-amount-forecasted"></span></p>
             </div>
         </div>
@@ -88,10 +88,10 @@
                 for this transaction.</p>
         </div>
         <div class="row">
-            <div class="col-25">
+            <div class="row-heading">
                 <p class="forecasted-label">Adjusted range of SGD required based on your risk level</p>
             </div>
-            <div class="col-75">
+            <div class="row-content">
                 <p><span id="final-page-forecast" class="converted-amount converted-amount-forecasted"></span></p>
             </div>
         </div>
