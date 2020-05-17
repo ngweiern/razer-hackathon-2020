@@ -8,4 +8,5 @@ Save on FX Expenses with Artificial Intelligence. Outcome of Razer Fintech Digit
 
 ### Starting the frontend
 `$ python3 -m http.server`
+
 Go to http://localhost:8000 in browser
