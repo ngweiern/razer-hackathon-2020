@@ -82,7 +82,7 @@ def get_current_fx():
         conversionRate=response_json['conversionRate'],
         destinationAmount=response_json['destinationAmount'],
         markUpRateApplied=response_json['markUpRateApplied'],
-        ooriginalDestnAmtBeforeMarkUp=response_json['originalDestnAmtBeforeMarkUp']
+        originalDestnAmtBeforeMarkUp=response_json['originalDestnAmtBeforeMarkUp']
     )
 
 

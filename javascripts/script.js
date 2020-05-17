@@ -3,6 +3,8 @@ var active_color = "rgb(237, 40, 70)";
 
 var child = 1;
 var length = $("section").length - 1;
+let amountToConvert;
+let amountConverted;
 $("#back").addClass("disabled");
 $("#submit").addClass("disabled");
 
@@ -48,29 +50,61 @@ document.getElementById("svg_form_time").appendChild(circle);
 
 $("circle:nth-of-type(1)").css("fill", active_color);
 
+function handleExchangeRate(data) {
+    const allRows = data.split(/\r?\n|\r/);
+    const startDate = $("#start-date").val();
+    const startDateArray = startDate.split(' ');
+    const startMon = startDateArray[0][0] + startDateArray[0].substring(1, 3)
+    const startYear = startDateArray[1]
+    const startDateInput = startMon + " " + startYear
+
+    for (let singleRow = 0; singleRow < allRows.length; singleRow++) {
+        if (singleRow === 0) {
+            continue;
+        }
+
+        const rowCells = allRows[singleRow].split('|');
+        if (rowCells[0] === startDateInput) {
+            forecastedValue = amountToConvert / Number.parseFloat(rowCells[1]);
+            minForecastedValue = Math.round(forecastedValue * 0.95)
+            maxForecastedValue = Math.round(forecastedValue * 1.02)
+            $("#savings").text(`$${Math.round(amountConverted-minForecastedValue)}`)
+            // $('#forecasted-label').text(`Forecasted range of SGD required`)
+            $(".converted-amount-forecasted").text(`$${minForecastedValue} - $${maxForecastedValue}`)
+            $("#final-page-forecast").text(`$${Math.round(forecastedValue * 0.98)} - $${Math.round(forecastedValue * 1.01)}`)
+            $("#final-savings").text(`$${Math.round(amountConverted-forecastedValue * 0.98)}`)
+        }
+    }
+}
+
 function getFx() {
-    let amountToConvert = $("#amount-to-convert").val().toString()
-    let startDate = $("#start-date").val()
-    let fromCurrency = $('#from-currency').find(":selected").val()
-    let toCurrency = $('#to-currency').find(":selected").val()
+    amountToConvert = $("#amount-required").val()
+    let fromCurrency = $('#from-currency').find(":selected").val().split(',')
+    let fromCurrencyCode = fromCurrency[0]
+    let fromCurrencyChar = fromCurrency[1]
+
+    let toCurrency = $('#to-currency').find(":selected").val().split(',')
+    let toCurrencyCode = toCurrency[0]
+    let toCurrencyChar = toCurrency[1]
 
     $.ajax({
-        headers: { "Accept": "application/json"},
+        headers: {"Accept": "application/json"},
         url: "http://localhost:5000/getCurrentFx",
         crossDomain: true,
         data: {
-            "dest_currency": toCurrency,
-            "source_currency": fromCurrency,
+            "dest_currency": fromCurrencyCode,
+            "source_currency": toCurrencyCode,
             "amount": amountToConvert,
             "markup_rate": 0.05
         },
         cache: false,
         type: "GET",
         success: function (response) {
-            console.log(response)
             $("#svg_form_time rect").css("fill", active_color);
             $("#svg_form_time circle").css("fill", active_color);
-            $("#converted-amount").text(response.destinationAmount).css({"display": "block"})
+            console.log(response)
+            amountConverted = response.destinationAmount
+            $("#converted-amount-current").text(`$${Math.round(amountConverted)}`).css({"display": "block"})
             $("#back").removeClass("disabled");
             if (child >= length) {
                 $('#next').addClass("disabled");
@@ -94,6 +128,12 @@ function getFx() {
             currentSection.prevAll('section').css('transform', 'translateX(-100px)');
             currentSection.nextAll('section').css('transform', 'translateX(100px)');
             $('section').not(currentSection).hide();
+
+            $.ajax({
+                url: `data/forecast_sgd_${toCurrencyChar.toLowerCase()}.csv`,
+                dataType: 'text',
+            }).done(handleExchangeRate);
+
         },
         error: function (xhr) {
 
@@ -115,7 +155,36 @@ $(".button").click(function () {
         //     child++;
         // }
         //
-        getFx();
+        if (child === 1) {
+            getFx();
+        } else {
+            $("#svg_form_time rect").css("fill", active_color);
+            $("#svg_form_time circle").css("fill", active_color);
+
+            $("#back").removeClass("disabled");
+            if (child >= length) {
+                $('#next').addClass("disabled");
+                $('#submit').removeClass("disabled");
+            }
+            if (child <= length) {
+                child++;
+            }
+            var circle_child = child + 1;
+            $("#svg_form_time rect:nth-of-type(n + " + child + ")").css(
+                "fill",
+                base_color
+            );
+            $("#svg_form_time circle:nth-of-type(n + " + circle_child + ")").css(
+                "fill",
+                base_color
+            );
+            var currentSection = $("section:nth-of-type(" + child + ")");
+            currentSection.fadeIn();
+            currentSection.css('transform', 'translateX(0)');
+            currentSection.prevAll('section').css('transform', 'translateX(-100px)');
+            currentSection.nextAll('section').css('transform', 'translateX(100px)');
+            $('section').not(currentSection).hide();
+        }
 
     } else if (id == "back") {
         $("#next").removeClass("disabled");
@@ -143,6 +212,7 @@ $(".button").click(function () {
         currentSection.nextAll('section').css('transform', 'translateX(100px)');
         $('section').not(currentSection).hide();
     }
+
     // var circle_child = child + 1;
     // $("#svg_form_time rect:nth-of-type(n + " + child + ")").css(
     //     "fill",
@@ -160,13 +230,12 @@ $(".button").click(function () {
     // $('section').not(currentSection).hide();
 });
 
-
 $.ajax({
     url: 'data/currency_code.csv',
     dataType: 'text',
-}).done(successFunction);
+}).done(handleCurrencyCodes);
 
-function successFunction(data) {
+function handleCurrencyCodes(data) {
     var allRows = data.split(/\r?\n|\r/);
     // var table = '<table>';
     for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
@@ -176,8 +245,8 @@ function successFunction(data) {
 
         var rowCells = allRows[singleRow].split('|');
 
-        $('#from-currency').append(`<option value="${rowCells[3]}">${rowCells[1]} (${rowCells[2]})</option>`);
-        $('#to-currency').append(`<option value="${rowCells[3]}">${rowCells[1]} (${rowCells[2]})</option>`);
+        // $('#from-currency').append(`<option value="${rowCells[3]},${rowCells[2]}">${rowCells[1]} (${rowCells[2]})</option>`);
+        $('#to-currency').append(`<option value="${rowCells[3]},${rowCells[2]}">${rowCells[1]} (${rowCells[2]})</option>`);
     }
 }
 

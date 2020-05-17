@@ -1,5 +1,7 @@
 Country Name|Currency Name|Currency Code (3 Char)|Currency Code (numeric)
-Australia|AUSTRALIAN DOLLAR|AUD|36
+United States|U.S. DOLLAR|USD|840
+Europe|EURO|EUR|978
+United Kingdom|POUND STERLING|GBP|826
 Japan|YEN|JPY|392
 Singapore|SINGAPORE DOLLAR|SGD|702
-United Kingdom|POUND STERLING|GBP|826
+China|YUAN RENMINBI|CNY|156
